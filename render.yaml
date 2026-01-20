@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: phishing-detection-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MODEL_PATH_BERT
+        value: your-username/phishing-detection-bert
+      - key: MODEL_PATH_LSTM
+        value: models_data/lstm_model.pt
+      - key: MODEL_PATH_GRU
+        value: models_data/gru_model.pt
+      - key: TOKENIZER_PATH_RNN
+        value: models_data/rnn_tokenizer.pkl
