@@ -15,7 +15,8 @@ async def predict_email(request: PredictionRequest):
         return PredictionResponse(
             model=request.model,
             prediction=result["prediction"],
-            confidence=result["confidence"]
+            confidence=result["confidence"],
+            top_tokens=result.get("top_tokens")
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
