@@ -1,0 +1,167 @@
+# Postman Test Cases for Phishing Email Detection API
+
+## Base URL
+https://your-vercel-url.vercel.app
+
+---
+
+## Test 1: Health Check
+**Method:** GET
+**URL:** {{baseUrl}}/health
+**Expected Response:**
+```json
+{
+  "status": "healthy"
+}
+```
+
+---
+
+## Test 2: Predict Phishing Email (LSTM)
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "Your account has been compromised. Click here to reset your password immediately.",
+  "model": "lstm"
+}
+```
+
+**Expected Response:**
+```json
+{
+  "model": "lstm",
+  "prediction": "phishing",
+  "confidence": 0.90,
+  "top_tokens": [
+    {"token": "click", "shap_score": 0.15},
+    {"token": "compromised", "shap_score": 0.12}
+  ]
+}
+```
+
+---
+
+## Test 3: Predict Phishing Email (GRU)
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "Urgent! Your bank account has been hacked. Verify your identity now!",
+  "model": "gru"
+}
+```
+
+**Expected Response:**
+```json
+{
+  "model": "gru",
+  "prediction": "phishing",
+  "confidence": 0.85,
+  "top_tokens": [...]
+}
+```
+
+---
+
+## Test 4: Predict Legitimate Email (LSTM)
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "Hi, just wanted to follow up on our meeting yesterday. Let me know if you have any questions.",
+  "model": "lstm"
+}
+```
+
+**Expected Response:**
+```json
+{
+  "model": "lstm",
+  "prediction": "legitimate",
+  "confidence": 0.75,
+  "top_tokens": [...]
+}
+```
+
+---
+
+## Test 5: Invalid Model Type
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "Test email content",
+  "model": "invalid"
+}
+```
+
+**Expected Status:** 400
+
+---
+
+## Test 6: Empty Text
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "",
+  "model": "lstm"
+}
+```
+
+**Expected Status:** 422
+
+---
+
+## Test 7: Missing Model Field
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "text": "Test email content"
+}
+```
+
+**Expected Status:** 422
+
+---
+
+## Test 8: Missing Text Field
+**Method:** POST
+**URL:** {{baseUrl}}/predict
+**Headers:**
+- Content-Type: application/json
+
+**Body:**
+```json
+{
+  "model": "lstm"
+}
+```
+
+**Expected Status:** 422
