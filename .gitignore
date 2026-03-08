@@ -8,3 +8,4 @@ venv/
 .DS_Store
 .idea/
 .vscode/
+BERT_RESTORE_GUIDE.md
